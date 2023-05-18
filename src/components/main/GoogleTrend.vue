@@ -162,18 +162,6 @@
             </button>
         </div>
     </div>
-    <!-- <div>
-        <div  :key="index">
-            <h2>{{ item.title }}</h2>
-            <ul>
-                <li v-for="(news, index) in item['ht:news_item']" :key="index">
-                    <h3>{{ news['ht:news_item_title'] }}</h3>
-                    <p>{{ news['ht:news_item_snippet'] }}</p>
-                    <a :href="news['ht:news_item_url']">{{ news['ht:news_item_source'] }}</a>
-                </li>
-            </ul>
-        </div>
-    </div> -->
     <!-- 캐러셀 -->
 </template>
 
@@ -195,7 +183,7 @@ export default {
         });
     },
     mounted() {
-        if(sessionStorage.getItem('googleTrend') != null) {
+        if (sessionStorage.getItem('googleTrend') != null) {
             this.trends = JSON.parse(sessionStorage.getItem('googleTrend'))
             this.isLoading = false
         } else {
@@ -209,7 +197,7 @@ export default {
         },
         loadGoogleTrend() {
             // axios.defaults.baseURL = '';
-            console.log('자식함수 실행')
+            // console.log('자식함수 실행')
             this.axiosInstance.get('/google/rss?geo=KR')
                 .then((response) => {
                     console.log('통신완료')
@@ -292,7 +280,10 @@ export default {
 }
 
 @media (max-width: 576px) {
-
+    .my_right_slide {
+        position: absolute;
+        right: 260%;
+        bottom: 18px;
+    }
 }
-
 </style>

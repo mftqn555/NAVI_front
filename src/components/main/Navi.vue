@@ -11,7 +11,7 @@
                 </h4>
                 <p v-if="this.isLoading" class="card-text opacity-75">
                     <small>
-                    - 메세지 생성까지 다소 시간이 소요될 수 있습니다
+                        - 메세지 생성까지 다소 시간이 소요될 수 있습니다
                     </small>
                     <span class="spinner-grow text-light" role="status" style="width: 10px; height: 10px;">
                         <span class="visually-hidden">Loading...</span>
@@ -47,25 +47,25 @@ export default {
             this.isLoading = true
             this.setNickname()
             const data = sessionStorage.getItem('gptMessage');
-            if(data != null || data != undefined) {
+            if (data != null || data != undefined) {
                 this.gptMessage = data
                 this.isLoading = false;
             } else {
                 axios.get('/api/gpt')
-                .then(response => {
-                    const data = JSON.parse(JSON.stringify(response.data.choices));
-                    this.gptMessage = data[0].message.content;
-                    this.isLoading = false;
-                    sessionStorage.setItem('gptMessage', this.gptMessage);
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+                    .then(response => {
+                        const data = JSON.parse(JSON.stringify(response.data.choices));
+                        this.gptMessage = data[0].message.content;
+                        this.isLoading = false;
+                        sessionStorage.setItem('gptMessage', this.gptMessage);
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
             }
         },
         setNickname() {
             const data = JSON.parse(localStorage.getItem('loginInfo'));
-            if(data != null || data != undefined) {
+            if (data != null || data != undefined) {
                 this.nickname = data.nickname
             } else {
                 this.nickname = '방문자'
@@ -85,3 +85,11 @@ export default {
     }
 }
 </script>
+
+<style>
+@media (max-width: 576px) {
+    .card-img {
+        height: 230px;
+    }
+}
+</style>

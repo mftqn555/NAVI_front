@@ -8,13 +8,13 @@
                         <form class="needs-validation">
                             <div class="my-3">
                                 <label for="password" class="form-label">현재 비밀번호</label>
-                                <input v-model="oldPassword" type="password" class="form-control" id="password" name="password"
-                                    required>
+                                <input v-model="oldPassword" type="password" class="form-control" id="password"
+                                    name="password" required>
                             </div>
                             <div class="my-3">
                                 <label for="password" class="form-label">비밀번호</label>
-                                <input v-model="newPassword" type="password" class="form-control" id="password" name="password"
-                                    required>
+                                <input v-model="newPassword" type="password" class="form-control" id="password"
+                                    name="password" required>
                             </div>
                             <div class="my-3">
                                 <label for="password-confirm" class="form-label">비밀번호 확인</label>
@@ -62,10 +62,10 @@ export default {
                 }
                 axios.patch('/users/password', JSON.stringify(passwordData), { headers: { "Content-Type": `application/json` } })
                     .then((response) => {
-                            console.log(this.email)
-                            alert('비밀번호가 변경되었습니다')
-                            this.$router.push('/')
-                        }
+                        // console.log(this.email)
+                        alert('비밀번호가 변경되었습니다')
+                        this.$router.push('/')
+                    }
                     )
                     .catch(error => {
                         alert(error.response.data.message)
@@ -150,87 +150,12 @@ nav a {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.box_title {
-    margin: 0;
-    font-size: 25px;
-    width: 80px;
-    white-space: nowrap;
-    font-weight: bold;
-    width: 80px;
-    padding: 10px 0px;
-}
-
-.box-text {
-    margin: 0;
-    font-size: 16px;
-}
-
-.box-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 footer {
     padding: 10px;
     background-color: #f4f6f8;
     color: #000;
     text-align: center;
     box-shadow: 0px -1px 0px rgba(0, 0, 0, 0.2);
-}
-
-/* CSS Code */
-.login-box {
-    width: 400px;
-    margin: 6% auto;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #fff;
-}
-
-.login-box h2 {
-    margin-top: 0;
-}
-
-.login-box form {
-    display: flex;
-    flex-direction: column;
-}
-
-.login-box label {
-    display: block;
-    font-weight: bold;
-    text-align: left;
-}
-
-.login-box input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.login-btn {
-    padding: 0.5rem 1rem;
-    background-color: #4285f4;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.login-btn:hover {
-    background-color: #3367d6;
-}
-
-.gray-btn {
-    padding: 0.5rem 1rem;
-    background-color: #ccc;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: not-allowed;
-    margin-top: 1rem;
 }
 
 .form-control.no-validate:valid {

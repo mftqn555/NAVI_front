@@ -5,7 +5,7 @@
                 <span>🚉 전국 지하철 도착정보</span>
                 <a href="#" class="btn btn-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#subway">검색</a>
             </span>
-            <span class="input-group input-group-sm my-3" style="max-width: 70%;">
+            <span class="input-group input-group-sm my-3 search">
                 <span class="input-group-text rounded-0">최근검색기록</span>
                 <select class="form-select" @change="getStationInfoByStored($event)">
                     <option v-if="!this.isChanged" :selected="true">선택하기</option>
@@ -13,7 +13,8 @@
                         {{ info.subwayStationName + '(' + info.subwayRouteName + ')' }}
                     </option>
                 </select>
-                <button @click="clickInit()" class="btn btn-outline-secondary ms-3 rounded-0" type="button" id="button-addon2">검색 초기화</button>
+                <button @click="clickInit()" class="btn btn-outline-secondary ms-3 rounded-0" type="button"
+                    id="button-addon2">검색 초기화</button>
             </span>
             <div>
                 <div class="h5 text-center mt-3" style="font-weight: 500;">{{ this.stationName }}</div>
@@ -273,7 +274,7 @@ export default {
             for (var i = 0; i < storageData.length; i++) {
                 const storedId = JSON.parse(JSON.stringify(storageData[i])).subwayStationId;
                 if (id === storedId) {
-                    console.log("똑같은 역 존재함: " + id + " / " + storedId)
+                    // console.log("똑같은 역 존재함: " + id + " / " + storedId)
                     return true
                 }
             }
@@ -300,9 +301,18 @@ export default {
     margin-bottom: 5%;
 }
 
+.search {
+    max-width: 70%;
+}
+
 @media (max-width: 992px) {
     .subway_card {
         margin: 2% 0% 5% 0%;
     }
 }
-</style>
+
+@media (max-width: 576px) {
+    .search {
+        max-width: 100%;
+    }
+}</style>

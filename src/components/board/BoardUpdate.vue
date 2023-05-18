@@ -29,15 +29,15 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            bno: this.$route.query.bno,
+            bno: this.$route.params.bno,
             user_id: JSON.parse(localStorage.getItem('loginInfo')).id,
             nickname: JSON.parse(localStorage.getItem('loginInfo')).nickname,
-            title: "",
-            content: "",
+            title: this.$route.params.title,
+            content: this.$route.params.content,
             editor: Editor,
             editorConfig: {
                 simpleUpload: {
-                    uploadUrl: 'http://localhost:8082/boards/upload',
+                    uploadUrl: 'https://api.mysecnavi.store/boards/upload',
                     withCredentials: true,
                 },
                 mediaEmbed: {
@@ -47,31 +47,29 @@ export default {
         };
     },
     created() {
-        this.title = this.$route.params.title
-        this.content = this.$route.params.content
-        if(this.title == null || this.content == null) {
+        if (this.title === null || this.content === null || this.bno === null) {
             alert('잘못된 접근입니다')
             this.$router.push(`/board/${this.bno}?currentPage=1`)
         }
     },
     methods: {
-        contentTest() {
-            console.log(this.title);
-            console.log(this.content);
-        },
         update() {
-            const data = {
-                bno: this.bno,
-                title: this.title,
-                content: this.content,
+            if (!confirm('작성한 글을 등록하시겠습니까?')) {
+                alert('취소되었습니다')
+            } else {
+                const data = {
+                    bno: this.bno,
+                    title: this.title,
+                    content: this.content,
+                }
+                axios.patch(`/boards/${this.bno}`, JSON.stringify(data), { headers: { "Content-Type": `application/json` } })
+                    .then(response => {
+                        this.$router.push(`/board/${this.bno}?currentPage=1`)
+                    })
+                    .catch(error => {
+                        alert(error.response.data.message)
+                    })
             }
-            axios.patch(`/boards/${this.bno}`, JSON.stringify(data), { headers: { "Content-Type": `application/json` } })
-            .then(response => {
-                this.$router.push(`/board/${this.bno}?currentPage=1`)
-            })
-            .catch(error => {
-                alert(error.response.data.message)
-            })
         },
     },
 };
@@ -97,4 +95,11 @@ textarea {
 
 .ck-editor__editable {
     height: 600px;
-}</style>
+}
+
+@media (max-width: 576px) {
+    .container {
+        max-width: -webkit-fill-available;
+    }
+}
+</style>

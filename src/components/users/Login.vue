@@ -4,7 +4,6 @@
             <div class="box">
                 <div class="box_content">
                     <div class="login-box">
-                        <!-- is-invalid 추가 여부로 유효성 검사 하기-->
                         <h2 class="text-center">로그인</h2>
                         <form>
                             <div class="my-2">
@@ -57,16 +56,16 @@ export default {
                 })
                 .then(response => {
                     alert('로그인 성공')
-                        let now = new Date().getTime();
-                        const loginInfo = 
-                        {
-                            "id": response.data.id,
-                            "email": response.data.email,
-                            "nickname": response.data.nickname,
-                            "expire": now + 60 * 60 * 24 * 1000
-                        }
-                        localStorage.setItem('loginInfo', JSON.stringify(loginInfo))
-                        router.go(0)
+                    let now = new Date().getTime();
+                    const loginInfo =
+                    {
+                        "id": response.data.id,
+                        "email": response.data.email,
+                        "nickname": response.data.nickname,
+                        "expire": now + 60 * 60 * 24 * 1000
+                    }
+                    localStorage.setItem('loginInfo', JSON.stringify(loginInfo))
+                    router.go(0)
                 })
                 .catch(error => { alert('로그인에 실패하였습니다') })
         },
@@ -109,7 +108,6 @@ nav a {
     text-decoration: none;
 }
 
-/* Container styles */
 .wrap_main {
     flex: 1;
     margin: 0 10px 0 10px;
@@ -175,5 +173,15 @@ footer {
     border-color: #ced4da;
     padding-right: .75rem;
     background: none;
+}
+
+@media (max-width: 576px) {
+    .container {
+        max-width: -webkit-fill-available;
+    }
+
+    .login-box {
+        width: 100%;
+    }
 }
 </style>

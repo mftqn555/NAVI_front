@@ -8,16 +8,21 @@
             <table class="table table-sm table caption-top text-center">
                 <caption>
                     <div class="input-group input-group-sm mb-3">
-                        <select v-model="category" @change="categoryValue($event)" class="form-select rounded-0" style="max-width: 100px;">
+                        <select v-model="category" @change="categoryValue($event)" class="form-select rounded-0"
+                            style="max-width: 100px;">
                             <option selected name="title" value="title">제목</option>
                             <option name="content" value="content">내용</option>
                         </select>
-                        <input v-model="search" type="text" class="form-control focus-danger" aria-label="Text input with dropdown button" style="max-width: 150px;">
-                        <button @click="loadPosts()" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
-                        <button @click="clickInit()" class="btn btn-outline-secondary ms-3 rounded-0" type="button" id="button-addon2">검색 초기화</button>
+                        <input v-model="search" type="text" class="form-control focus-danger"
+                            aria-label="Text input with dropdown button" style="max-width: 150px;">
+                        <button @click="loadPosts()" class="btn btn-outline-secondary" type="button"
+                            id="button-addon2">검색</button>
+                        <button @click="clickInit()" class="btn btn-outline-secondary ms-3 rounded-0" type="button"
+                            id="button-addon2">검색 초기화</button>
                     </div>
                 </caption>
-                <thead class="table-light">
+                <!-- 데스크탑-->
+                <thead v-if="!this.isMobile" class="table-light">
                     <tr>
                         <th scope="col" style="width: 10%;">No</th>
                         <th scope="col" style="width: 60%;">제목</th>
@@ -39,7 +44,7 @@
                         <td class="text-muted">{{ formatDate(notice.create_date) }}</td>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="!this.isMobile">
                     <!-- 반복문으로 게시판 출력 -->
                     <tr v-for="post in posts" :key="post.bno">
                         <td class="text-muted">{{ post.bno }}</td>
@@ -60,8 +65,31 @@
                         <td class="text-muted">{{ formatDate(post.create_date) }}</td>
                     </tr>
                 </tbody>
+                <!-- 데스크탑-->
+                <!--모바일-->
+                <div v-if="this.isMobile" class="list-group">
+                    <a v-for="notice in notices" :key="notice.bno" href="#"
+                        class="list-group-item list-group-item-action rounded-0 bg-success border-0 border-bottom"
+                        style="--bs-bg-opacity: .5;" @click="goToBoardPage(notice.bno)">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">[공지사항] {{ notice.title }}</h6>
+                        </div>
+                        <small style="float: left;">{{ notice.nickname }}</small>
+                        <small style="float: right;">{{ formatDate(notice.create_date) }}</small>
+                    </a>
+                    <a v-for="post in posts" :key="post.bno" href="#"
+                        class="list-group-item list-group-item-action rounded-0 border-0 border-bottom"
+                        @click="goToBoardPage(post.bno)">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ post.title }}</h6>
+                        </div>
+                        <small style="float: left;">{{ post.nickname }}</small>
+                        <small style="float: right;">{{ formatDate(post.create_date) }}</small>
+                    </a>
+                </div>
+                <!--모바일-->
                 <button @click="goToWritePage" class="btn btn-light my-2" type="button"
-                    style="width: max-content;">글작성</button>
+                    style="width: max-content; float: left;">글작성</button>
             </table>
             <!-- 반복문으로 페이징 출력, 현재 보고있는 페이지에 active클래스 추가 -->
             <nav class="">
@@ -73,8 +101,8 @@
 
                     <li v-for="i in pagination.endPage - pagination.startPage + 1" :key="i" class="page-item">
                         <a @click="goToPage(pagination.startPage + i - 1)"
-                            :class="[pagination.startPage + i - 1 == this.currentPage ? 'bg-secondary text-light' : '']" class="page-link text-secondary"
-                            style="cursor: pointer;">
+                            :class="[pagination.startPage + i - 1 == this.currentPage ? 'bg-secondary text-light' : '']"
+                            class="page-link text-secondary" style="cursor: pointer;">
                             {{ pagination.startPage + i - 1 }}
                         </a>
                     </li>
@@ -98,9 +126,21 @@
                 </div>
                 <div class="modal-body">
                     <!-- 회원정보-->
-                    <p>회원번호 {{ this.userInfo.id }}</p>
-                    <p>이메일 {{ this.userInfo.email }}</p>
-                    <p>닉네임 {{ this.userInfo.nickname }}</p>
+                    <div>회원번호
+                        <div>
+                            {{ this.userInfo.id }}
+                        </div>
+                    </div>
+                    <div>이메일
+                        <div>
+                            {{ this.userInfo.email }}
+                        </div>
+                    </div>
+                    <div>닉네임
+                        <div>
+                            {{ this.userInfo.nickname }}
+                        </div>
+                    </div>
                     <!-- 회원정보-->
                 </div>
                 <div class="modal-footer">
@@ -119,8 +159,8 @@ import axios from 'axios'
 export default {
     beforeRouteLeave(to, from, next) {
         // 라우터 떠나기 전에 세션스토리지에 정보들 저장
-        console.log("BEFORE ROUTER LEAVE 실행")
-        const searchData = 
+        // console.log("BEFORE ROUTER LEAVE 실행")
+        const searchData =
         {
             "category": this.category,
             "search": this.search,
@@ -130,12 +170,12 @@ export default {
     },
     beforeRouteEnter(to, from, next) {
         // /board 이외의 경로에서 에서 진입한 경우엔 세션 스토리지 초기화
-        if(from.name !== "Board") {
-            console.log("TO NAME " + to.name)
-            console.log("FROM NAME " + from.name)
-            console.log('검색 데이터 초기화')
+        if (from.name !== "Board") {
+            // console.log("TO NAME " + to.name)
+            // console.log("FROM NAME " + from.name)
+            // console.log('검색 데이터 초기화')
             sessionStorage.removeItem('searchInfo')
-        }    
+        }
         next()
     },
     data() {
@@ -157,9 +197,13 @@ export default {
             user_id: '',
             category: 'title',
             search: '',
+            isMobile: false,
         }
     },
     created() {
+        if (innerWidth < 576) {
+            this.isMobile = true
+        }
         if (localStorage.getItem('loginInfo') == null) {
             this.user_id = ''
         } else {
@@ -168,11 +212,11 @@ export default {
         }
     },
     mounted() {
-        if(sessionStorage.getItem('searchInfo') !== null) {
-            const searchInfo = JSON.parse(sessionStorage.getItem('searchInfo'));    
+        if (sessionStorage.getItem('searchInfo') !== null) {
+            const searchInfo = JSON.parse(sessionStorage.getItem('searchInfo'));
             this.category = searchInfo.category
             this.search = searchInfo.search
-            console.log('검색 데이터 불러오기 성공')
+            // console.log('검색 데이터 불러오기 성공')
         }
         this.loadPosts()
         this.loadNotice()
@@ -197,12 +241,12 @@ export default {
                 .then((response) => {
                     this.posts = response.data.boardList
                     this.pagination = response.data.pagination
-                    if(this.currentPage > this.pagination.endPage) {
-                        console.log("현재 페이지가 더 클 경우")
+                    if (this.currentPage > this.pagination.endPage) {
+                        // console.log("현재 페이지가 더 클 경우")
                         this.currentPage = this.pagination.endPage
                     }
-                    console.log("CATEGORY: " + this.category)
-                    console.log("SEARCH: " + this.search)
+                    // console.log("CATEGORY: " + this.category)
+                    // console.log("SEARCH: " + this.search)
                 }
                 )
                 .catch(error => {
@@ -210,7 +254,7 @@ export default {
                 })
         },
         loadNotice() {
-            console.log("공지사항 가져오기")
+            // console.log("공지사항 가져오기")
             axios.get('/boards/notice')
                 .then(response => {
                     this.notices = response.data
@@ -248,7 +292,7 @@ export default {
             axios.get(`/users/info?nickname=${nickname}`)
                 .then(response => {
                     this.userInfo = response.data
-                    console.log('관리자가 받아온 유저 정보 ' + this.userInfo)
+                    // console.log('관리자가 받아온 유저 정보 ' + this.userInfo)
                 })
         },
         clickKickUser(email, password) {
@@ -303,7 +347,6 @@ hr {
     width: 100%;
 }
 
-/* Container styles */
 .wrap_main {
     flex: 1;
     margin: 0 10px 0 10px;
@@ -317,6 +360,7 @@ hr {
     background-color: #fff;
     min-height: 809px;
 }
+
 .my_hover {
     color: #000;
     text-decoration: none;
@@ -324,6 +368,11 @@ hr {
 
 .my_hover:hover {
     color: #555;
-    text-decoration: underline;  
+    text-decoration: underline;
 }
-</style>
+
+@media (max-width: 576px) {
+    .container {
+        max-width: -webkit-fill-available;
+    }
+}</style>

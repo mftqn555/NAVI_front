@@ -19,7 +19,8 @@
                     <div class="mb-2 mx-1" style="font-weight: 500;">찾으시는 버스의 번호를 검색해주세요</div>
                     <div class="input-group mb-3">
                         <input v-model="inputBusNum" type="text" class="form-control focus-danger" placeholder="예) 33, 111">
-                        <button @click="getBusNumList(this.inputBusNum)" class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+                        <button @click="getBusNumList(this.inputBusNum)" class="btn btn-outline-secondary" type="button"
+                            id="button-addon2">검색</button>
                     </div>
                     <!-- 로딩창-->
                     <div v-if="this.isLoading" class="m-4 d-flex justify-content-center">
@@ -33,7 +34,8 @@
                     <!-- 로딩창-->
                     <!-- 검색결과 1개인 경우-->
                     <ol v-if="!this.isLocationLoaded && isObject(this.busNumList)" class="list-group">
-                        <li @click="getBusLocation()" class="list-group-item d-flex justify-content-between align-items-start list-group-item-action">
+                        <li @click="getBusLocation()"
+                            class="list-group-item d-flex justify-content-between align-items-start list-group-item-action">
                             <div class="ms-2 me-auto">
                                 <div class="h4 fw-bold">{{ this.busNumList.buslinenum }}</div>
                                 <div class="h6">{{ this.busNumList.bustype }}</div>
@@ -45,7 +47,8 @@
                     <!-- 검색결과 1개인 경우-->
                     <!-- 검색결과 여러개인 경우-->
                     <ol v-if="!this.isLocationLoaded && isArray(busNumList)" class="list-group">
-                        <li @click="getBusLocation(idx)" v-for="(bus, idx) in busNumList" class="list-group-item d-flex justify-content-between align-items-start list-group-item-action">
+                        <li @click="getBusLocation(idx)" v-for="(bus, idx) in busNumList"
+                            class="list-group-item d-flex justify-content-between align-items-start list-group-item-action">
                             <div class="ms-2 me-auto">
                                 <div class="h4 fw-bold">{{ bus.buslinenum }}</div>
                                 <div class="h6">{{ bus.bustype }}</div>
@@ -60,13 +63,14 @@
                         <div v-for="location in busLocationList" class="row">
                             <div class="col-2 text-center py-1" style="min-height: 75px;">
                                 <span v-if="location.carno">
-                                    <img :src="bus" width="25"/>
+                                    <img :src="bus" width="25" />
                                     <div style="font-size: 0.75rem;">{{ location.carno }}</div>
                                     <div style="font-size: 0.75rem;">({{ this.isLowPlate(location.lowplate) }})</div>
                                 </span>
                             </div>
                             <div class="col-10 ps-0">
-                                <a class="list-group-item list-group-item-action border-0 border-5 border-start border-secondary">
+                                <a
+                                    class="list-group-item list-group-item-action border-0 border-5 border-start border-secondary">
                                     <div class="d-flex w-100 justify-content-between">
                                         <h6 class="mb-1">{{ location.bstopnm }}</h6>
                                     </div>
@@ -113,30 +117,30 @@ export default {
             this.isLocationLoaded = false;
             this.busNumList = [];
             // 버스번호 리스트 받아오기 
-            const data = 
+            const data =
             {
                 busNum: num
-            }   
+            }
             axios.post(`/api/bus/num`, data, { headers: { "Content-Type": `application/json` } })
-            .then(response => {
-                const xml = response.data // 전체 XML 데이터
-                const xml2js = require('xml2js');
-                const parser = new xml2js.Parser({ explicitArray: false });
-                parser.parseString(xml, (err, result) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    const data = result;
-                    this.busNumList = JSON.parse(JSON.stringify(data.response.body.items.item));
-                    console.log("버스 번호 리스트" + JSON.stringify(this.busNumList))
+                .then(response => {
+                    const xml = response.data // 전체 XML 데이터
+                    const xml2js = require('xml2js');
+                    const parser = new xml2js.Parser({ explicitArray: false });
+                    parser.parseString(xml, (err, result) => {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                        const data = result;
+                        this.busNumList = JSON.parse(JSON.stringify(data.response.body.items.item));
+                        // console.log("버스 번호 리스트" + JSON.stringify(this.busNumList))
+                        this.isLoading = false
+                    });
+                })
+                .catch(error => {
                     this.isLoading = false
-                }); 
-            })
-            .catch(error => {
-                this.isLoading = false
-                this.hasError = true;
-            })
+                    this.hasError = true;
+                })
         },
         getBusLocation(idx) {
             this.hasError = false;
@@ -148,30 +152,30 @@ export default {
                 this.selectedBus = this.busNumList[idx]
                 lineId = this.selectedBus.lineid;
             }
-            console.log("선택된 버스의 lineId: " + lineId)
-            const data = 
+            // console.log("선택된 버스의 lineId: " + lineId)
+            const data =
             {
                 lineId: lineId
-            }   
+            }
             axios.post(`/api/bus/location`, data, { headers: { "Content-Type": `application/json` } })
-            .then(response => {
-                const xml = response.data // 전체 XML 데이터
-                const xml2js = require('xml2js');
-                const parser = new xml2js.Parser({ explicitArray: false });
-                parser.parseString(xml, (err, result) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    const data = result;
-                    this.busLocationList = JSON.parse(JSON.stringify(data.response.body.items.item));
-                    this.isLocationLoaded = true;
-                    this.isLoading = false;
-                });
-            })
-            .catch(error => {
-                this.hasError = true;
-            })
+                .then(response => {
+                    const xml = response.data // 전체 XML 데이터
+                    const xml2js = require('xml2js');
+                    const parser = new xml2js.Parser({ explicitArray: false });
+                    parser.parseString(xml, (err, result) => {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                        const data = result;
+                        this.busLocationList = JSON.parse(JSON.stringify(data.response.body.items.item));
+                        this.isLocationLoaded = true;
+                        this.isLoading = false;
+                    });
+                })
+                .catch(error => {
+                    this.hasError = true;
+                })
         },
         isLowPlate(value) {
             return value == 1 ? '저상' : '일반';
@@ -199,5 +203,4 @@ export default {
     top: 45%;
     left: 6.66%;
     width: 5%;
-}
-</style>
+}</style>

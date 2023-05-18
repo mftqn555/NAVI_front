@@ -1,7 +1,7 @@
 <template>
     <main class="wrap_main">
         <div class="my-container">
-            <div class="container py-4">
+            <div class="container py-4 board_mobile">
                 <BoardContent />
                 <BoardComment />
             </div>
@@ -47,7 +47,7 @@ export default {
         addViewCount(bno) {
             axios.post(`/boards/${bno}/view`)
                 .then(response => {
-                    console.log("조회수 1 증가")
+                    // console.log("조회수 1 증가")
                 })
         },
         cancelViewCount() {
@@ -60,21 +60,6 @@ export default {
 <style scoped>
 hr {
     margin: 0;
-}
-
-.my-title {
-    background-color: aliceblue;
-    height: 35px;
-    padding: 2px 20px 0 10px;
-    font-size: 14px;
-}
-
-.title_mg {
-    margin: 0.3rem;
-}
-
-.card {
-    margin-bottom: 5px;
 }
 
 /* Container styles */
@@ -92,4 +77,13 @@ hr {
     background-color: #fff;
     min-height: 809px;
 }
-</style>
+
+@media (max-width: 576px) {
+    .board_mobile {
+        padding: 0 !important;
+    }
+
+    .container {
+        max-width: -webkit-fill-available;
+    }
+}</style>

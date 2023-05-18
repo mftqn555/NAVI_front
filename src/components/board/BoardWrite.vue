@@ -37,7 +37,7 @@ export default {
             editor: Editor,
             editorConfig: {
                 simpleUpload: {
-                    uploadUrl: 'http://localhost:8082/boards/upload',
+                    uploadUrl: 'https://api.mysecnavi.store/boards/upload',
                     withCredentials: true,
                 },
                 mediaEmbed: {
@@ -47,26 +47,26 @@ export default {
         };
     },
     methods: {
-        contentTest() {
-            console.log(this.title);
-            console.log(this.content);
-        },
         post() {
-            const isAdmin = this.nickname == '관리자' ? true : false
-            const data = {
-                user_id: this.user_id,
-                nickname: this.nickname,
-                title: this.title,
-                content: this.content,
-                admin: isAdmin,
+            if (!confirm('작성한 글을 등록하시겠습니까?')) {
+                alert('취소되었습니다')
+            } else {
+                const isAdmin = this.nickname == '관리자' ? true : false
+                const data = {
+                    user_id: this.user_id,
+                    nickname: this.nickname,
+                    title: this.title,
+                    content: this.content,
+                    admin: isAdmin,
+                }
+                axios.post('/boards', JSON.stringify(data), { headers: { "Content-Type": `application/json` } })
+                    .then(response => {
+                        this.$router.push('/boards?currentPage=1')
+                    })
+                    .catch(error => {
+                        alert(error.response.data.message)
+                    })
             }
-            axios.post('/boards', JSON.stringify(data), { headers: { "Content-Type": `application/json` } })
-            .then(response => {
-                this.$router.push('/boards?currentPage=1')
-            })
-            .catch(error => {
-                alert(error.response.data.message)
-            })
         }
     },
 };
@@ -92,4 +92,11 @@ textarea {
 
 .ck-editor__editable {
     height: 600px;
-}</style>
+}
+
+@media (max-width: 576px) {
+    .container {
+        max-width: -webkit-fill-available;
+    }
+}
+</style>

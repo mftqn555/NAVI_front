@@ -2,12 +2,14 @@
     <header>
         <div class="header-container">
             <div class="logo hover-muted">
-                <router-link id="logo" class="text-decoration-none text-white hover-effect" to="/" style="font-weight: 800;">나비</router-link>
+                <router-link id="logo" class="text-decoration-none text-white hover-effect" to="/"
+                    style="font-weight: 800;">나비</router-link>
             </div>
             <nav>
                 <ul>
                     <li><router-link class="text-white hover-effect" to="/boards?currentPage=1">자유게시판</router-link></li>
-                    <li><router-link class="text-white hover-effect" to="/info" v-if="loginInfo != null" >내정보</router-link></li>
+                    <li><router-link class="text-white hover-effect" to="/info" v-if="loginInfo != null">내정보</router-link>
+                    </li>
                     <a href="" class="text-white hover-effect">
                         <li v-if="loginInfo != null" @click="logout">로그아웃</li>
                         <li v-else @click="login">로그인</li>
@@ -100,5 +102,4 @@ nav a {
     color: #000;
     text-decoration: none;
 }
-
 </style>

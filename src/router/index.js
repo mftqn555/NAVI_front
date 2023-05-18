@@ -54,12 +54,9 @@ const routes = [
         path: "/findUser",
         name: "FindUser",
         component: FindUserInfo,
-        beforeEnter: (to, from, next) => {
-            loginCheck(next)
-        }
     },
     {
-        path: "/boardUpdate",
+        path: "/boardUpdate/:bno/:title/:content",
         name: "BoardUpdate",
         component: BoardUpdate,
         beforeEnter: (to, from, next) => {

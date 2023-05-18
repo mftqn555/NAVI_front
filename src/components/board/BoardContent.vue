@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="">
         <p class="h5 fw-bold mt-5">{{ boardContent.title }}</p>
         <hr>
         <div class="d-flex justify-content-between my-title">
@@ -9,7 +9,9 @@
         <div class="my-5 mx-3" v-html="boardContent.content"></div>
         <hr>
         <div class="btn-group btn-group-sm mt-2">
-            <button v-show="this.user_id === boardContent.user_id" @click="goToUpdate()" type="button" class="btn btn-outline-secondary">수정</button>
+            <button v-show="this.user_id === boardContent.user_id" @click="goToUpdate()" type="button" class="btn btn-outline-secondary">
+                수정
+            </button>
             <button v-show="this.user_id === boardContent.user_id || this.nickname === '관리자'" @click="deleteBoard()" type="button" class="btn btn-outline-secondary">삭제</button>
         </div>
     </div>
@@ -36,23 +38,23 @@ export default {
         axios.get(`/boards/${this.bno}`)
             .then(response => {
                 this.boardContent = response.data
-                console.log(this.boardContent)
+                // console.log(this.boardContent)
             })
     },
     methods: {
         goToUpdate() {
+            const bno = this.bno
+            const title = this.boardContent.title
+            const content = this.boardContent.content
             this.$router.push(
                 {
                     name: "BoardUpdate",
                     params:
                     {
-                        title: this.boardContent.title,
-                        content: this.boardContent.content
+                        bno: bno,
+                        title : title,
+                        content : content
                     },
-                    query:
-                    {
-                        bno: this.bno
-                    }
                 })
         },
         deleteBoard() {
@@ -87,25 +89,5 @@ hr {
 
 .title_mg {
     margin: 0.3rem;
-}
-
-.card {
-    margin-bottom: 5px;
-}
-
-/* Container styles */
-.wrap_main {
-    flex: 1;
-    margin: 0 10px 0 10px;
-}
-
-.my-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 1000px;
-    margin: 0% auto;
-    background-color: #fff;
-    min-height: 809px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <footer>
-            <p>Copyright © 2023</p>
-        </footer>
+        <p>Copyright © 2023</p>
+    </footer>
 </template>
 
 <script>

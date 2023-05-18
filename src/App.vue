@@ -43,6 +43,12 @@ body {
     margin: 0;
 }
 
+@media (max-width: 576px) {
+    .app {
+        background-color: #fff;
+    }
+}
+
 @font-face {
 	font-family: 'Pretendard';
 	font-weight: 900;

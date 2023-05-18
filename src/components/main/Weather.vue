@@ -88,7 +88,7 @@ export default {
           position => {
             this.GPSx = position.coords.latitude
             this.GPSy = position.coords.longitude
-            console.log("NX, NY " + this.GPSx + " / " + this.GPSy)
+            // console.log("NX, NY " + this.GPSx + " / " + this.GPSy)
             this.performLccDfsConversion()
             this.getWeatherInfo()
           },
@@ -111,7 +111,7 @@ export default {
     getWeatherInfo() {
       this.hasError = false;
       if (sessionStorage.getItem('weatherItem') !== null) {
-        console.log('세션스토리지 로딩')
+        // console.log('세션스토리지 로딩')
         this.weatherItem = JSON.parse(sessionStorage.getItem('weatherItem'))
         this.isLoading = false
       }
@@ -149,7 +149,7 @@ export default {
       {
         sidoName: this.weatherItem.location
       }
-      console.log("시도명: " + this.weatherItem.location)
+      // console.log("시도명: " + this.weatherItem.location)
       axios.post(`/api/dust`, data, { headers: { "Content-Type": `application/json`, } })
           .then(response => {
             const responseData = response.data.response.body.items[0];
@@ -300,86 +300,3 @@ export default {
 }
 
 </script>
-
-<style scoped>
-.app {
-  background-color: #f4f6f8;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-body {
-  font-family: "TmoneyRoundWindRegular", "TmoneyRoundWindExtraBold";
-  display: block;
-  margin: 0;
-}
-
-/* Container styles */
-.wrap_main {
-  flex: 1;
-  margin: 0 10px 0 10px;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.box:first-child {
-  background-color: #ADD8E6;
-  padding: 15px;
-  text-align: center;
-  font-size: 24px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.box {
-  position: relative;
-  background-color: #fff;
-  padding: 15px;
-  text-align: center;
-  font-size: 24px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
-
-.box_title {
-  margin: 0;
-  font-size: 25px;
-  width: 80px;
-  white-space: nowrap;
-  font-weight: bold;
-  width: 80px;
-  padding: 10px 0px;
-}
-
-.box-text {
-  margin: 0;
-  font-size: 16px;
-}
-
-.box-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.my_hover {
-  color: #000;
-  text-decoration: none;
-}
-
-.my_hover:hover {
-  color: #555;
-  text-decoration: underline;
-}
-</style>

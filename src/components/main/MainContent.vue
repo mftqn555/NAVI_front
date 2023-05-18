@@ -2,12 +2,12 @@
     <div class="wrap_main">
         <div class="container">
             <div class="row">
-                <Navi/>
+                <Navi />
             </div>
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-8">
                     <div class="h4 mt-4" style="font-weight: 800; font-size: 1.6rem;"> &nbsp;&nbsp; 📣 오늘의 핫이슈
-                        <div class="float-end text-muted mt-3" style="font-size: 0.9rem;">
+                        <div class="float-end text-muted mt-3 date">
                             <span>
                                 <a @click="reloadGooleTrend()" style="cursor: pointer;">
                                     <img :src="reloadIcon" width="25" height="25" class="me-2" />
@@ -21,17 +21,17 @@
             <div class="row">
                 <GoogleTrend ref="googleTrend" :key="gTrendKey" />
                 <div id="title2_content" class="col-sm-12 col-md-12 col-lg-4">
-                    <Bookmark/>     
+                    <Bookmark />
                     <Weather :key="weatherKey" :reload="reloadWeather" />
                 </div>
             </div>
             <div class="row">
                 <h4 class="my-3 mt-5" style="font-weight: 800; font-size: 1.6rem;">🚏 대중교통 정보</h4>
                 <div class="col-lg-8 col-md-12 col-sm-12">
-                    <Bus/>
+                    <Bus />
                 </div>
                 <div class="col-lg-8 col-md-12 col-sm-12">
-                    <Subway/>
+                    <Subway />
                 </div>
             </div>
         </div>
@@ -92,6 +92,10 @@ export default {
 </script>
 
 <style>
+.date {
+    font-size: 0.9rem;
+}
+
 .container {
     width: 1000px !important;
     background-color: #fff;
@@ -104,7 +108,6 @@ export default {
 }
 
 @media (max-width: 992px) {
-
     #title2 {
         position: absolute;
         bottom: -3%;
@@ -118,11 +121,18 @@ export default {
     .weather {
         margin-right: 5px;
     }
-}
 
-@media (max-width: 992px) {
     .my_mg {
         margin-right: 7px;
     }
 }
-</style>
+
+@media (max-width: 576px) {
+    .date {
+        font-size: 0.6rem;
+    }
+
+    .container {
+        padding: 0 !important;
+    }
+}</style>
